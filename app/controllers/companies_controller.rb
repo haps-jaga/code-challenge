@@ -17,6 +17,7 @@ class CompaniesController < ApplicationController
     if @company.save
       redirect_to companies_path, notice: "Saved"
     else
+      show_error
       render :new
     end
   end
@@ -28,9 +29,19 @@ class CompaniesController < ApplicationController
     if @company.update(company_params)
       redirect_to companies_path, notice: "Changes Saved"
     else
+      show_error
       render :edit
     end
-  end  
+  end
+
+  def destroy
+    if @company.destroy
+      redirect_to companies_path, notice: "Company deleted"
+    else
+      show_error
+      render :show
+    end
+  end
 
   private
 
@@ -49,5 +60,9 @@ class CompaniesController < ApplicationController
   def set_company
     @company = Company.find(params[:id])
   end
-  
+
+  def show_error
+    flash.now[:error] = @company.errors.full_messages[0]  if @company && @company.errors
+  end
+
 end

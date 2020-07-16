@@ -5,14 +5,16 @@
       <%= link_to "< Companies", companies_path %>
     </div>
     <div class="col text-right">
-      <%= link_to "Edit", edit_company_path %>
+      <%= link_to "Edit", edit_company_path %> |
+      <%= link_to 'Delete', company_path(@company), class: 'text-danger', method: :delete, data: { confirm: t('confirm') } %>
     </div>
   </div>
   <div class="bg-success">
     <div class="container p-5 text-white">
       <h1><%= @company.name %></h1>
-      <h3>City, State</h3>
-      <pre>☝️ This is what needs to be udpated. Examples: Atlanta, GA or Nashvile, TN</pre>
+      <% if @company.city || @company.state %>
+        <h3><%= @company.city ? @company.city : 'Unknown'%>, <%= @company.state ? @company.state : 'Unknown' %></h3>
+      <% end %>
     </div>
   </div>
   <% if @company.description.present? %>
